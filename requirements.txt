@@ -3,3 +3,4 @@ quart>=0.18.0
 httpx>=0.23.0
 websockets>=10.4
 hypercorn>=0.14.0
+PyYAML>=6.0

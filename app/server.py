@@ -42,9 +42,9 @@ async def setup():
 async def add_cors_headers(response):
     origin = request.headers.get('Origin')
     
-    if origin in config['cors']['allowed_origins']:
+    if origin in config['allowed_origins']:
         response.headers['Access-Control-Allow-Origin'] = origin
-        if config['cors']['allow_credentials']:
+        if config['allow_credentials']:
             response.headers['Access-Control-Allow-Credentials'] = 'true'
     
     response.headers['Access-Control-Allow-Methods'] = 'GET, POST, PUT, DELETE, OPTIONS'
@@ -56,7 +56,7 @@ async def proxy_http(path):
     async with httpx.AsyncClient() as client:
         req = client.build_request(
             request.method,
-            f"{config['immich']['url']}/{path}",
+            f"{config['immich_url']}/{path}",
             headers={k: v for k, v in request.headers if k.lower() != 'host'},
             content=await request.get_data()
         )
@@ -65,7 +65,7 @@ async def proxy_http(path):
 
 @app.websocket('/<path:path>')
 async def proxy_websocket(path):
-    async with websockets.connect(f"{config['immich']['ws_url']}/{path}") as ws_client:
+    async with websockets.connect(f"{config['immich_url']}/{path}") as ws_client:
         async def forward():
             async for msg in websocket:
                 await ws_client.send(msg)
