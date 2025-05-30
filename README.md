@@ -23,20 +23,6 @@ git clone https://github.com/keineantwort/immich-cors-proxy.git
 cd immich-cors-proxy
 ```
 
-### Install Dependencies
-
-#### For Local Development
-
-```bash
-pip install -r requirements.txt
-```
-
-#### For Docker (automatic)
-
-```bash
-docker compose build
-```
-
 ### Configure the proxy
 
 #### the `.env` file
@@ -69,8 +55,8 @@ services:
     #... (immich-server config)
 
   cors-proxy:
-    build: .
-    env_file: .env
+    build: ./immich-cors-proxy
+    env_file: ./immich-cors-proxy/.env
     ports:
       - "5000:5000"
     restart: unless-stopped
@@ -85,6 +71,20 @@ services:
     image: redis:7
     # ... (rest of Immich's default Redis config)
 
+```
+
+### Install Dependencies
+
+#### For Local Development
+
+```bash
+pip install -r requirements.txt
+```
+
+#### For Docker (automatic)
+
+```bash
+docker compose build cors-proxy
 ```
 
 ### Start the Containers
