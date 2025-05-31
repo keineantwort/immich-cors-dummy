@@ -75,7 +75,9 @@ async def proxy_http(path):
 
 @app.websocket('/<path:path>')
 async def proxy_websocket(path):
-    async with websockets.connect(f"{config['immich_url']}/{path}") as ws_client:
+    ws_url = config['immich_url'].replace('http://', 'ws://').replace("https://", "wss://")
+
+    async with websockets.connect(ws_url) as ws_client:
         async def forward():
             async for msg in websocket:
                 await ws_client.send(msg)
